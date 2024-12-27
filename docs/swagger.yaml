@@ -1,0 +1,168 @@
+basePath: /api/v1
+definitions:
+  models.Product:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  utils.Response:
+    properties:
+      data:
+        description: Optional data
+      message:
+        description: User-friendly message
+        type: string
+      status:
+        description: success or failed
+        type: string
+      technical_message:
+        description: Detailed technical info
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+    url: http://example.com/contact
+  description: This is the API documentation for the E-Commerce application.
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://example.com/terms/
+  title: E-Commerce API
+  version: "1.0"
+paths:
+  /products:
+    get:
+      description: Get a list of all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Products retrieved successfully
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Failed to fetch products
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Retrieve all products
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: Admins can create a new product by providing necessary details
+      parameters:
+      - description: Product data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Product created successfully
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Failed to create product
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create a new product
+      tags:
+      - Products
+  /products/{id}:
+    delete:
+      description: Admins can delete a product by providing the product ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product deleted successfully
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "403":
+          description: Unauthorized action
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Failed to delete product
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete a product
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Admins can update product details by providing the product ID and
+        new data
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated product data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated successfully
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "403":
+          description: Unauthorized action
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Failed to update product
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update an existing product
+      tags:
+      - Products
+swagger: "2.0"
